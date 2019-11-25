@@ -1,5 +1,3 @@
-**Repository is now archived**
-
 # Add to Homescreen call out
 
 Script for mobile devices, it automatically shows an overlaying message encouraging to add the web app to the homescreen. Compatible with iOS 6+ and Chrome for Android (soon WinPhone).
@@ -13,11 +11,44 @@ Add `addtohomescreen.css` and `addtohomescreen.js` to the head of your projects 
 <title>Add To Home</title>
 ...
 <link rel="stylesheet" type="text/css" href="../../style/addtohomescreen.css">
-<script src="../../src/addtohomescreen.js"></script>
-<script>
-addToHomescreen();
-</script>
 </head>
+<body>
+<!--To get the Add to Homescreen on IOS devices, see readme for more informations-->
+<script src="lib/addtohomescreen.js"></script>
+<script>
+		const isIos = () => {
+			// eslint-disable-next-line sap-no-navigator
+			const userAgent = window.navigator.userAgent.toLowerCase();
+			return /iphone|ipad|ipod/.test(userAgent);
+		};
+	
+		// eslint-disable-next-line sap-no-navigator
+		const isInStandaloneMode = () => ("standalone" in window.navigator) && (window.navigator.standalone);
+	
+		if (isIos() && !isInStandaloneMode()) {
+			if (typeof addToHomescreen !== "undefined") {
+				addToHomescreen({
+					skipFirstVisit: false,
+					startDelay: 0,
+					displayPace: 0,
+					autostart: true
+				});
+			} else {
+				console.error("addToHomeScreen has not been imported");
+			}
+		}
+	</script>
+    <noscript>
+        <div>
+            <p>
+                🚧 The application requires Javascript to works properly 🚧
+            </p>
+            <p>
+                Enable it in your settings and reload the page.
+            </p>
+        </div>
+      </noscript>
+</body>
 ```
 
 For more, consult the [project website](http://cubiq.org/add-to-home-screen).
